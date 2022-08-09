@@ -1,0 +1,59 @@
+from randomuser import RandomUser
+import requests
+import json
+import pandas as pd
+from IPython.display import display
+import requests
+import json
+
+
+
+
+#RANDOM USER GENERATOR
+
+r = RandomUser()
+
+some_list = r.generate_users(10)
+
+
+
+for user in some_list:
+    print(user.get_picture())
+
+
+#generate a function to get the users
+
+def get_users():
+    users =[]
+     
+    for user in RandomUser.generate_users(10):
+        users.append({"Name":user.get_full_name(),"Gender":user.get_gender(),"City":user.get_city(),"State":user.get_state(),"Email":user.get_email(), "DOB":user.get_dob(),"Picture":user.get_picture()})
+      
+    return pd.DataFrame(users)
+
+
+get_users()
+
+#generate table with information about the users
+
+df1 = pd.DataFrame(get_users()) 
+
+display(df1)
+
+
+#NUTRITIONAL INFORMATION
+
+data = requests.get("https://www.fruityvice.com/api/fruit/all")
+
+results = json.loads(data.text) #retrieving the data
+
+pd.DataFrame(results)
+df2 = pd.json_normalize(results) #manage the data with a pandas dataframe
+
+apple = df2.loc[df2["name"] == 'Apple']
+(apple.iloc[0]['family']) , (apple.iloc[0]['genus'])
+
+
+
+
+
